@@ -1,0 +1,38 @@
+# ====================================================
+# Backup the database `database_name` into a SQL file
+# ====================================================
+
+pg_dump -U postgres -d database_name -f /Users/Z/.../postgres_path.sql
+
+# Explanation:
+# -U postgres          : connect as user `postgres` (or your user)
+# -d database_name     : name of your database
+# -f .../postgres_path.sql : output file
+
+# You may also add -F c to dump in custom format (recommended for large DBs)
+# pg_dump -U postgres -d database_name -F c -f /path/backup.dump
+
+
+# ====================================================
+# Restore (two ways)
+# ====================================================
+
+# 1) Using input redirection (for plain SQL dumps)
+psql -U postgres -d database_name_import < /Users/adiwahyudi/.../postgres_path.sql
+
+# Explanation:
+# -U postgres : connect as postgres user
+# -d database_name_import : database must already exist before restore
+
+
+# 2) Inside the psql client
+psql -U postgres -d database_name_import
+# Then inside psql prompt:
+\i /Users/adiwahyudi/.../postgres_path.sql
+
+
+# ====================================================
+# If you used pg_dump -F c (custom format), restore like this:
+# ====================================================
+
+pg_restore -U postgres -d database_name_import /path/backup.dump
